@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { signIn } from '../app/actions/auth'
 
 function Icon({ name, size = 20, strokeWidth = 1.8, className = '' }) {
   const paths = {
@@ -86,7 +87,7 @@ const capabilities = [
 
 const pilotCategories = ['জমে থাকা পানি', 'ড্রেন ও পানিনিষ্কাশন মুখ', 'দৃশ্যমান বর্জ্য', 'পানি জমার পাত্র বা বস্তু', 'রাস্তার পাশের বাধা', 'চলাচল ও ড্রেনে প্রবেশের বাধা']
 
-function App() {
+function App({ authError }) {
   const [menuOpen, setMenuOpen] = useState(false)
   const closeMenu = () => setMenuOpen(false)
 
@@ -98,7 +99,7 @@ function App() {
           <a href="#approach" onClick={closeMenu}>পদ্ধতি</a>
           <a href="#workflow" onClick={closeMenu}>যেভাবে কাজ করে</a>
           <a href="#pilot" onClick={closeMenu}>পাইলটের পরিধি</a>
-          <a href="#pilot" className="nav-cta" onClick={closeMenu}>পাইলট দেখুন <Icon name="arrowUp" size={16} /></a>
+          <a href="#signin" className="nav-cta" onClick={closeMenu}>অফিসিয়াল প্রবেশ <Icon name="arrowUp" size={16} /></a>
         </nav>
         <button className="menu-toggle" type="button" aria-label={menuOpen ? 'মেনু বন্ধ করুন' : 'মেনু খুলুন'} aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}><Icon name={menuOpen ? 'close' : 'menu'} size={24} /></button>
       </div>
@@ -123,6 +124,7 @@ function App() {
       <section id="workflow" className="workflow-section"><div className="container workflow-inner"><div className="workflow-copy"><span className="section-kicker light">কাজের ধাপ</span><h2>দেখুন। যাচাই করুন।<br /><em>উন্নতি আনুন।</em></h2><p>প্রথম পর্যবেক্ষণ থেকে ফল যাচাই পর্যন্ত প্রতিটি ধাপে নগর কর্তৃপক্ষের সিদ্ধান্তই মুখ্য।</p><a href="#pilot" className="button button-light">পাইলটের পরিধি দেখুন <Icon name="arrow" size={18} /></a></div><div className="workflow-steps"><div><span>০১</span><div><strong>শনাক্ত ও মানচিত্রায়ন</strong><p>অনুমোদিত ছবি সংগ্রহ করে দৃশ্যমান সমস্যার অবস্থান চিহ্নিত করুন।</p></div></div><div><span>০২</span><div><strong>যাচাই ও পদক্ষেপ</strong><p>মাঠকর্মী তথ্য যাচাই করে পরবর্তী করণীয় ঠিক করেন।</p></div></div><div><span>০৩</span><div><strong>পুনরায় দেখে ফল যাচাই</strong><p>পদক্ষেপের পরের তথ্য আগের সঙ্গে তুলনা করে ফল নথিবদ্ধ করুন।</p></div></div></div></div></section>
 
       <section id="pilot" className="section pilot-section"><div className="container pilot-inner"><div className="pilot-heading"><span className="section-kicker">ছোট পরিসরে শুরু, দ্রুত শেখা</span><h2>বাংলাদেশের জন্য<br /><em>সুনির্দিষ্ট পাইলট।</em></h2><p>প্রস্তাবিত ৩০০–৫০০ মিটার এলাকা কাজের ধাপ পরীক্ষা, স্থানীয় তথ্য সংগ্রহ ও পদ্ধতি উন্নত করার সুযোগ দেবে।</p><div className="pilot-note"><Icon name="pin" size={18} /><span>একটি রাস্তা, বাজারসংলগ্ন এলাকা বা ক্যাম্পাসের সীমানা</span></div></div><div className="pilot-panel"><div className="pilot-panel-head"><span>প্রাথমিক পর্যবেক্ষণ</span><span>৬টি বিষয়</span></div><div className="pilot-list">{pilotCategories.map((category, index) => <div key={category}><span className="pilot-index">{['০১', '০২', '০৩', '০৪', '০৫', '০৬'][index]}</span><span>{category}</span><Icon name="arrowUp" size={16} /></div>)}</div><p>দৃশ্যমান সমস্যাগুলো পরিদর্শনের সম্ভাব্য স্থান নির্দেশ করে। প্রতিটি সিদ্ধান্তে মানুষের যাচাই প্রয়োজন।</p></div></div></section>
+      <section id="signin" className="signin-section"><div className="container signin-inner"><div><span className="section-kicker light">অফিসিয়াল ডেমো</span><h2>একটি ধারণা, সম্পূর্ণ <em>কাজের পথ।</em></h2><p>দৃশ্য বিশ্লেষণ থেকে মানব যাচাই, দায়িত্ব বণ্টন, মাঠকাজ এবং ফল পর্যালোচনা—সবই অনুমোদিত ডেমো কর্মকর্তাদের জন্য। এখানে দেখানো তথ্য ও AI ফল ধারণামূলক।</p><div className="signin-rule"><Icon name="shield" size={18}/><span>জনসাধারণ শুধু এই পরিচিতি পাতা দেখতে পারবেন।</span></div></div><form action={signIn} className="signin-card"><span className="signin-card-kicker">সুরক্ষিত প্রবেশ</span><h3>কর্মকর্তা সাইন ইন</h3><p>প্রশাসকের দেওয়া ডেমো অ্যাকাউন্ট ব্যবহার করুন। এখানে নতুন অ্যাকাউন্ট খোলা যায় না।</p>{authError && <div className="signin-error" role="alert">{authError === 'unavailable' ? 'ডেমো সার্ভার এখনও কনফিগার করা হয়নি।' : authError === 'denied' ? 'এই অ্যাকাউন্টের অফিসিয়াল অনুমতি নেই।' : authError === 'required' ? 'ভেতরের পাতা দেখতে আগে সাইন ইন করুন।' : 'ইমেইল বা পাসওয়ার্ড যাচাই করুন।'}</div>}<label>অফিসিয়াল ইমেইল<input type="email" name="email" autoComplete="username" placeholder="name@example.gov.bd" required/></label><label>পাসওয়ার্ড<input type="password" name="password" autoComplete="current-password" placeholder="আপনার পাসওয়ার্ড" required/></label><button type="submit" className="button button-primary">কর্মক্ষেত্রে প্রবেশ <Icon name="arrow" size={18}/></button><small>শুধু অনুমোদিত ডেমো অ্যাকাউন্ট</small></form></div></section>
     </main>
 
     <footer className="site-footer"><div className="container footer-inner"><div><Logo light /><p>রাস্তার তথ্য থেকে কার্যকর পদক্ষেপের পথে।</p></div><div className="footer-right"><a href="#top">ওপরে ফিরুন ↑</a><span>© {new Date().getFullYear().toLocaleString('bn-BD', { useGrouping: false })} Nagar Shield 360</span></div></div></footer>

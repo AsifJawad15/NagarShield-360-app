@@ -2,3 +2,12 @@ node_modules/
 .next/
 out/
 *.local
+.env
+.env.*
+!.env.example
+demo-media/generated/
+demo-accounts.local.json
+.env
+.env.*
+!.env.example
+demo-media/generated/
