@@ -10,7 +10,9 @@
     "typecheck": "tsc --noEmit",
     "demo:provision": "node --env-file=.env.local scripts/provision.mjs",
     "test:migration": "node scripts/check-migration.mjs",
-    "test:layout": "node scripts/check-layout.mjs"
+    "test:layout": "node scripts/check-layout.mjs",
+    "test:official-layout": "node scripts/check-official-layout.mjs",
+    "test:web-boundary": "node scripts/check-web-boundary.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",

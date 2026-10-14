@@ -6,7 +6,7 @@ import type { Incident } from '@/src/lib/types'
 const csv = (value: unknown) => `"${String(value ?? '').replaceAll('"','""')}"`
 export async function GET() {
   const { supabase, profile } = await requireOfficial()
-  if (profile.role === 'field_employee') return new NextResponse('Forbidden', { status: 403 })
+  if (profile.role === 'field_employee' || profile.role === 'survey_operator') return new NextResponse('Forbidden', { status: 403 })
   const { data, error } = await supabase.from('incidents').select('*').order('created_at',{ascending:false})
   if (error) return new NextResponse('Report unavailable', { status: 500 })
   const rows = (data || []) as Incident[]

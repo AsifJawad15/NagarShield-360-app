@@ -10,3 +10,55 @@
 .notification-menu{position:relative}.notification-menu summary{list-style:none;cursor:pointer}.notification-menu summary::-webkit-details-marker{display:none}.notification-popover{position:absolute;z-index:200;right:-20px;top:32px;width:260px;background:#fff;border:1px solid #dce9df;border-radius:9px;box-shadow:0 18px 40px #173e3528;padding:15px;color:#325d45}.notification-popover strong{font-size:11px}.notification-popover p{border-top:1px solid #e8eee8;padding-top:10px;margin:10px 0;color:#6c8774;font-size:10px;line-height:1.6}.notification-popover small{color:#94a999;font-size:9px}
 .report-comparisons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.report-comparison{border:1px solid #e4ece4;border-radius:8px;padding:12px}.report-comparison>strong{display:block;font-size:11px;margin-bottom:10px}.report-comparison>div{display:grid;grid-template-columns:1fr 1fr;gap:7px}.report-comparison figure{margin:0}.report-comparison img{display:block;width:100%;height:92px;object-fit:cover;border-radius:5px;background:#e8f0e8}.report-comparison figcaption{font-size:9px;color:#7b947f;margin-top:5px}@media(max-width:900px){.report-comparisons{grid-template-columns:1fr}}@media(max-width:650px){.report-comparison img{height:110px}}
 .evidence-image video,.report-comparison video{display:block;width:100%;height:100%;object-fit:cover;background:#e8f0e8}.report-comparison video{height:92px;border-radius:5px}@media(max-width:650px){.report-comparison video{height:110px}}
+
+.review-media img,.review-media video{width:144px;height:90px;object-fit:cover;border-radius:8px}
+
+.survey-site-list>div{display:flex;justify-content:space-between;padding:12px;border-top:1px solid #e3ebe4}.survey-mission{padding:18px;border-top:1px solid #e3ebe4}.survey-mission h3{margin:6px 0}.survey-observations{display:flex;gap:14px;flex-wrap:wrap}.survey-observations>div{display:flex;flex-direction:column;gap:4px;padding:8px;background:#f5f8f3;border-radius:9px;max-width:180px}
+
+.analysis-image.imported>img,.analysis-image.imported>video{object-fit:fill}.manual-overlay,.manual-hitbox{position:absolute;inset:0;width:100%;height:100%}.manual-overlay{pointer-events:none;fill:#37c8a233;stroke:#13a87b;stroke-width:.7}.manual-hitbox{cursor:crosshair;touch-action:none}.manual-controls{display:flex;flex-wrap:wrap;gap:10px;padding:12px 0}.manual-controls label{display:flex;align-items:center;gap:5px}.manual-controls input,.manual-controls select{max-width:150px;padding:5px}.manual-controls small{flex-basis:100%;color:#687f70}.annotation-json{max-height:150px;overflow:auto;font-size:11px;background:#f2f7f1;padding:9px;flex-basis:100%}
+
+/* Presentation readability and mobile task navigation. */
+.official-app{font-size:14px}
+html[lang=bn] .official-app .page-heading h1{font-size:32px;line-height:1.35;letter-spacing:0;max-width:none;margin:8px 0 6px}
+html[lang=bn] .official-app h2{font-size:18px;line-height:1.4;letter-spacing:0}
+html[lang=bn] .official-app h3{font-size:16px;line-height:1.4;letter-spacing:0}
+.official-sidebar{overflow-y:auto}
+.official-nav a,.sidebar-profile strong{font-size:13px}
+.page-heading p,.demo-note,.detail-summary>p,.analysis-side .panel>p{font-size:14px}
+.page-kicker,.mini-kicker,.row-meta,.incident-row-main>span,.task-card p,.detail-task>p,.map-incident-list span,.quick-links a span{font-size:12px}
+.incident-row-main strong,.quick-links a strong,.task-card-note,.detail-task-head strong,.review-row strong,.survey-mission p{font-size:14px}
+.priority-pill,.status-pill,.prototype-tag,.demo-indicator{font-size:11px}
+.button-dark,.button-outline,.button-text{font-size:13px;min-height:40px}
+.official-app label,.official-app select,.official-app input,.official-app textarea{font-size:13px}
+.help-text{font-size:12px!important;color:#617d6d!important}
+.notice-error{background:#fff0e8;color:#8c452d;border:1px solid #e8c3af}
+.review-row{flex-wrap:wrap;gap:12px 16px}
+.review-row>div:first-child{min-width:240px}
+.incident-search{display:flex;align-items:end;gap:10px;flex-wrap:wrap;margin:18px 0}.incident-search label{display:grid;gap:5px;color:#476e56;font-weight:700}.incident-search input{min-width:min(280px,75vw);padding:9px 11px;border:1px solid #cbded1;border-radius:7px;background:#fff}
+.review-row form{display:grid;gap:6px;min-width:150px}.review-note{display:grid;gap:4px;color:#456b57;font-size:11px;font-weight:700}.review-note textarea{width:min(100%,230px);min-height:54px;resize:vertical;border:1px solid #cbded1;border-radius:6px;padding:7px}
+.review-row p{margin:6px 0 0;color:#607b6a;font-size:12px;line-height:1.6}
+.review-media img,.review-media video{display:block}
+.assignment-note{grid-column:1/-1}
+.official-app button:disabled{opacity:.5;cursor:not-allowed}
+.survey-mission p{color:#627b6c;line-height:1.6}
+.survey-observations>div{max-width:220px}
+.survey-observations strong,.survey-observations span{font-size:12px}
+.manual-controls details{flex-basis:100%}
+.manual-controls summary{cursor:pointer;color:#38745b;font-weight:700}
+@media(max-width:1200px){.incident-row-tags{display:flex}}
+@media(max-width:900px){
+  .mobile-official-nav{justify-content:flex-start;gap:4px;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:thin}
+  .mobile-official-nav a{flex:0 0 86px;min-height:48px;padding:3px 2px;font-size:10px}
+  .official-content{padding-bottom:112px}
+}
+@media(max-width:650px){
+  html[lang=bn] .official-app .page-heading h1{font-size:26px}
+  .incident-row{display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:8px}
+  .incident-row-icon{grid-column:1;grid-row:1}
+  .incident-row-main{grid-column:2;grid-row:1}
+  .score-cell{grid-column:3;grid-row:1}
+  .incident-row-tags{grid-column:2/-1;grid-row:2;justify-content:flex-start}
+  .review-media,.review-media img,.review-media video{width:100%;height:auto;max-height:220px}
+  .review-row>div:first-child{min-width:0;flex-basis:100%}
+  .mobile-official-nav a{font-size:10px}
+}

@@ -11,6 +11,12 @@ export async function signIn(formData: FormData) {
   const supabase = await supabaseServer()
   const { error } = await supabase.auth.signInWithPassword({ email, password })
   if (error) redirect('/?auth=invalid#signin')
+  const { data: { user } } = await supabase.auth.getUser()
+  const profile = user ? await supabase.from('profiles').select('role').eq('id', user.id).maybeSingle() : null
+  if (!profile?.data || !['executive','department_head','supervisor','field_employee','survey_operator'].includes(profile.data.role)) {
+    await supabase.auth.signOut()
+    redirect('/?auth=denied#signin')
+  }
   redirect('/dashboard')
 }
 

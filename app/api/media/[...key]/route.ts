@@ -6,7 +6,11 @@ export async function GET(_request: NextRequest, context: { params: Promise<{ ke
   const { key } = await context.params
   const path = key.join('/')
   if (!path || key.some(part => part === '..' || part === '.')) return new NextResponse('Bad path', { status: 400 })
-  const { data, error } = await supabase.storage.from('demo-media').download(path)
+  const bucket = key[0] === 'scenarios' ? 'demo-media' : 'evidence'
+  if (bucket === 'evidence' && !['public', 'survey', 'task'].includes(key[0])) {
+    return new NextResponse('Bad path', { status: 400 })
+  }
+  const { data, error } = await supabase.storage.from(bucket).download(path)
   if (error || !data) return new NextResponse('Not found', { status: 404 })
   return new NextResponse(data, { headers: { 'Content-Type': data.type || 'application/octet-stream', 'Cache-Control': 'private, no-store', 'X-Content-Type-Options': 'nosniff' } })
 }

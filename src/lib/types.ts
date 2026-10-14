@@ -1,4 +1,4 @@
-export type Role = 'executive' | 'department_head' | 'supervisor' | 'field_employee'
+export type Role = 'executive' | 'department_head' | 'supervisor' | 'field_employee' | 'survey_operator'
 export type IncidentStatus = 'needs_review' | 'verified' | 'assigned' | 'acknowledged' | 'in_progress' | 'action_submitted' | 'verification_pending' | 'resolved' | 'dismissed'
 export type TaskStatus = 'assigned' | 'acknowledged' | 'in_progress' | 'action_submitted' | 'resolved'
 export type Priority = 'low' | 'moderate' | 'high' | 'critical'
@@ -15,6 +15,7 @@ export interface OfficialProfile {
 
 export interface Incident {
   id: string
+  observation_id: string | null
   code: string
   title_bn: string
   description_bn: string

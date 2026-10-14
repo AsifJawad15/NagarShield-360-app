@@ -29,10 +29,10 @@ function Logo({ light = false }) {
 }
 
 const markers = [
-  { className: 'marker-one', tone: 'amber', label: 'জমে থাকা পানির সম্ভাব্য স্থান' },
-  { className: 'marker-two', tone: 'coral', label: 'দৃশ্যমান বর্জ্য' },
-  { className: 'marker-three', tone: 'green', label: 'ড্রেনে প্রবেশের পথ' },
-  { className: 'marker-four', tone: 'amber', label: 'পরিদর্শনের সম্ভাব্য স্থান' },
+  { className: 'marker-one', tone: 'amber', label: 'পানি জমেছে বলে মনে হচ্ছে' },
+  { className: 'marker-two', tone: 'coral', label: 'জমে থাকা বর্জ্য' },
+  { className: 'marker-three', tone: 'green', label: 'ড্রেনের মুখ' },
+  { className: 'marker-four', tone: 'amber', label: 'দেখে আসার জায়গা' },
 ]
 
 function MapPreview() {
@@ -40,7 +40,7 @@ function MapPreview() {
     <div className="preview-topbar">
       <div className="preview-dots"><i /><i /><i /></div>
       <span className="preview-title">এলাকার সারসংক্ষেপ</span>
-      <span className="preview-badge">ধারণামূলক চিত্র</span>
+      <span className="preview-badge">নমুনা মানচিত্র</span>
     </div>
     <div className="map-canvas">
       <svg className="map-art" viewBox="0 0 640 490" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
@@ -65,13 +65,13 @@ function MapPreview() {
         <g fontFamily="Noto Sans Bengali, Nirmala UI, sans-serif" fontSize="12" fontWeight="700" fill="#8ca59a"><text x="36" y="282" transform="rotate(-13 36 282)">বাজার সড়ক</text><text x="452" y="315" transform="rotate(-18 452 315)">পাইলট এলাকা</text></g>
       </svg>
       <div className="map-grid" />
-      <div className="map-pill"><span className="map-pill-dot" /> নগর সেল ০৪</div>
+      <div className="map-pill"><span className="map-pill-dot" /> নমুনা এলাকা ০৪</div>
       {markers.map(marker => <span key={marker.className} className={`map-marker ${marker.className} ${marker.tone}`} title={marker.label}><span /></span>)}
       <div className="map-zoom" aria-hidden="true"><span>+</span><span>−</span></div>
       <div className="map-north">উত্তর <span>↑</span></div>
       <div className="observation-card">
         <div className="observation-icon"><Icon name="droplet" size={19} /></div>
-        <div><div className="observation-label">যাচাইয়ের জন্য</div><strong>জমে থাকা পানি</strong><p>মাঠপর্যায়ে পরীক্ষা প্রয়োজন</p></div>
+        <div><div className="observation-label">যাচাইয়ের জন্য</div><strong>জমে থাকা পানি</strong><p>জায়গাটি দেখে নিশ্চিত হতে হবে</p></div>
         <Icon name="arrowUp" size={16} className="observation-arrow" />
       </div>
     </div>
@@ -80,12 +80,12 @@ function MapPreview() {
 }
 
 const capabilities = [
-  { number: '০১', icon: 'scan', title: 'দৃশ্যমান সমস্যা শনাক্ত', text: 'অনুমোদিত উৎসের ছবি থেকে জমে থাকা পানি, বর্জ্য, ড্রেন এবং চলাচলের বাধা এক জায়গায় দেখুন।' },
-  { number: '০২', icon: 'layers', title: 'তথ্যগুলো একসঙ্গে দেখুন', text: 'কাছাকাছি পর্যবেক্ষণগুলো একই নগর সেলে যুক্ত করুন, যাতে একটি এলাকার একাধিক সমস্যা বোঝা সহজ হয়।' },
-  { number: '০৩', icon: 'check', title: 'কাজের ফল যাচাই', text: 'পরিদর্শনের সম্ভাব্য স্থান চিহ্নিত করুন, মানুষের সিদ্ধান্ত নথিবদ্ধ করুন এবং কাজের আগে ও পরের তথ্য তুলনা করুন।' },
+  { number: '০১', icon: 'scan', title: 'সমস্যা কোথায়, দেখুন', text: 'অনুমোদিত ছবি দেখে কোথায় পানি বা বর্জ্য জমেছে, ড্রেন বন্ধ হয়েছে কিংবা চলার পথে বাধা আছে, তা বুঝুন।' },
+  { number: '০২', icon: 'layers', title: 'তথ্যগুলো একসঙ্গে দেখুন', text: 'কাছাকাছি জায়গার সমস্যাগুলো পাশাপাশি দেখুন। তাতে কোথায় আগে যেতে হবে, তা ঠিক করা সহজ হয়।' },
+  { number: '০৩', icon: 'check', title: 'কাজের ফল যাচাই', text: 'কাজ দেওয়ার আগে জায়গাটি যাচাই করুন। কাজ শেষে আগের ও পরের ছবি মিলিয়ে দেখুন।' },
 ]
 
-const pilotCategories = ['জমে থাকা পানি', 'ড্রেন ও পানিনিষ্কাশন মুখ', 'দৃশ্যমান বর্জ্য', 'পানি জমার পাত্র বা বস্তু', 'রাস্তার পাশের বাধা', 'চলাচল ও ড্রেনে প্রবেশের বাধা']
+const pilotCategories = ['জমে থাকা পানি', 'ড্রেন ও পানি যাওয়ার পথ', 'জমে থাকা বর্জ্য', 'যেসব পাত্রে পানি জমে', 'রাস্তার পাশের বাধা', 'চলাচল বা ড্রেনের মুখে বাধা']
 
 function App({ authError }) {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -99,7 +99,7 @@ function App({ authError }) {
           <a href="#approach" onClick={closeMenu}>পদ্ধতি</a>
           <a href="#workflow" onClick={closeMenu}>যেভাবে কাজ করে</a>
           <a href="#pilot" onClick={closeMenu}>পাইলটের পরিধি</a>
-          <a href="#signin" className="nav-cta" onClick={closeMenu}>অফিসিয়াল প্রবেশ <Icon name="arrowUp" size={16} /></a>
+          <a href="#signin" className="nav-cta" onClick={closeMenu}>কর্মকর্তার প্রবেশ <Icon name="arrowUp" size={16} /></a>
         </nav>
         <button className="menu-toggle" type="button" aria-label={menuOpen ? 'মেনু বন্ধ করুন' : 'মেনু খুলুন'} aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}><Icon name={menuOpen ? 'close' : 'menu'} size={24} /></button>
       </div>
@@ -108,26 +108,26 @@ function App({ authError }) {
     <main>
       <section className="hero container" aria-labelledby="hero-title">
         <div className="hero-copy">
-          <div className="eyebrow"><span className="eyebrow-line" /> বাংলাদেশের নগর ব্যবস্থাপনার জন্য</div>
-          <h1 id="hero-title">প্রতিটি রাস্তার <em>আরও পরিষ্কার চিত্র।</em></h1>
-          <p className="hero-lede">Nagar Shield 360 শহরের দৃশ্যমান সমস্যাগুলো মানচিত্রে তুলে ধরে। মাঠকর্মীরা তথ্য যাচাই করে করণীয় ঠিক করতে এবং কাজের ফল দেখতে পারেন।</p>
+          <div className="eyebrow"><span className="eyebrow-line" /> শহরের সমস্যা বুঝতে, কাজের অগ্রগতি দেখতে</div>
+          <h1 id="hero-title">রাস্তার সমস্যা দেখুন,<br /><em>কাজের অগ্রগতি জানুন।</em></h1>
+          <p className="hero-lede">Nagar Shield 360-এ পানি জমা, বর্জ্য ও চলাচলের বাধার মতো সমস্যা এক জায়গায় দেখা যায়। কর্মকর্তারা তথ্য যাচাই করে দায়িত্ব দিতে এবং কাজের অগ্রগতি দেখতে পারেন।</p>
           <div className="hero-actions"><a className="button button-primary" href="#approach">পদ্ধতি দেখুন <Icon name="arrow" size={18} /></a><a className="text-link" href="#pilot">পাইলটের পরিধি <Icon name="arrowUp" size={16} /></a></div>
-          <div className="hero-proof"><span className="proof-icon"><Icon name="shield" size={18} /></span><span>মাঠপর্যায়ে যাচাই, দায়িত্বশীল পদক্ষেপ ও সুস্থ পাড়ার কথা ভেবে তৈরি।</span></div>
+          <div className="hero-proof"><span className="proof-icon"><Icon name="shield" size={18} /></span><span>আগে জায়গাটি যাচাই, তারপর দায়িত্ব ও কাজের ফল পর্যালোচনা।</span></div>
         </div>
-        <div className="hero-visual"><div className="visual-halo" /><MapPreview /><div className="floating-note"><span className="floating-note-icon"><Icon name="spark" size={17} /></span><span>পর্যবেক্ষণ থেকে<br /><strong>পদক্ষেপে</strong></span></div></div>
+        <div className="hero-visual"><div className="visual-halo" /><MapPreview /><div className="floating-note"><span className="floating-note-icon"><Icon name="spark" size={17} /></span><span>সমস্যা দেখা থেকে<br /><strong>কাজ শেষ করা</strong></span></div></div>
       </section>
 
-      <section className="focus-strip" aria-label="পাইলটের মূলনীতি"><div className="container focus-inner"><div><span className="focus-number">০১</span><span>নগরের পরিস্থিতি<br />একসঙ্গে দেখুন</span></div><div><span className="focus-number">০২</span><span>চূড়ান্ত সিদ্ধান্ত<br />মানুষের হাতে</span></div><div><span className="focus-number">০৩</span><span>কাজের আগে ও পরে<br />প্রমাণ দেখুন</span></div></div></section>
+      <section className="focus-strip" aria-label="পাইলটের মূলনীতি"><div className="container focus-inner"><div><span className="focus-number">০১</span><span>এলাকার সমস্যাগুলো<br />একসঙ্গে দেখুন</span></div><div><span className="focus-number">০২</span><span>চূড়ান্ত সিদ্ধান্ত<br />মানুষের হাতে</span></div><div><span className="focus-number">০৩</span><span>কাজের আগে ও পরে<br />মিলিয়ে দেখুন</span></div></div></section>
 
-      <section id="approach" className="section approach-section"><div className="container"><div className="section-intro"><div><span className="section-kicker">আমাদের পদ্ধতি</span><h2>সঠিক সিদ্ধান্তের শুরু<br /><em>প্রাসঙ্গিক তথ্য থেকে।</em></h2></div><p>একটি রাস্তার সমস্যা প্রায়ই একা আসে না। একই জায়গার দৃশ্যমান তথ্যগুলো একসঙ্গে দেখে দলগুলো কোন স্থান আগে পরিদর্শন করবে, তা ঠিক করতে পারে।</p></div><div className="capability-grid">{capabilities.map(item => <article className="capability-card" key={item.number}><div className="card-top"><span className="card-icon"><Icon name={item.icon} size={24} /></span><span className="card-number">{item.number}</span></div><h3>{item.title}</h3><p>{item.text}</p><span className="card-rule" /></article>)}</div></div></section>
+      <section id="approach" className="section approach-section"><div className="container"><div className="section-intro"><div><span className="section-kicker">আমাদের পদ্ধতি</span><h2>কোথায় আগে কাজ দরকার,<br /><em>তা এক নজরে বুঝুন।</em></h2></div><p>একই এলাকায় পানি, বর্জ্য ও ড্রেনের সমস্যা একসঙ্গে থাকতে পারে। তথ্যগুলো পাশাপাশি দেখলে কোথায় আগে যেতে হবে, তা ঠিক করা সহজ হয়।</p></div><div className="capability-grid">{capabilities.map(item => <article className="capability-card" key={item.number}><div className="card-top"><span className="card-icon"><Icon name={item.icon} size={24} /></span><span className="card-number">{item.number}</span></div><h3>{item.title}</h3><p>{item.text}</p><span className="card-rule" /></article>)}</div></div></section>
 
-      <section id="workflow" className="workflow-section"><div className="container workflow-inner"><div className="workflow-copy"><span className="section-kicker light">কাজের ধাপ</span><h2>দেখুন। যাচাই করুন।<br /><em>উন্নতি আনুন।</em></h2><p>প্রথম পর্যবেক্ষণ থেকে ফল যাচাই পর্যন্ত প্রতিটি ধাপে নগর কর্তৃপক্ষের সিদ্ধান্তই মুখ্য।</p><a href="#pilot" className="button button-light">পাইলটের পরিধি দেখুন <Icon name="arrow" size={18} /></a></div><div className="workflow-steps"><div><span>০১</span><div><strong>শনাক্ত ও মানচিত্রায়ন</strong><p>অনুমোদিত ছবি সংগ্রহ করে দৃশ্যমান সমস্যার অবস্থান চিহ্নিত করুন।</p></div></div><div><span>০২</span><div><strong>যাচাই ও পদক্ষেপ</strong><p>মাঠকর্মী তথ্য যাচাই করে পরবর্তী করণীয় ঠিক করেন।</p></div></div><div><span>০৩</span><div><strong>পুনরায় দেখে ফল যাচাই</strong><p>পদক্ষেপের পরের তথ্য আগের সঙ্গে তুলনা করে ফল নথিবদ্ধ করুন।</p></div></div></div></div></section>
+      <section id="workflow" className="workflow-section"><div className="container workflow-inner"><div className="workflow-copy"><span className="section-kicker light">কাজের ধাপ</span><h2>সমস্যা দেখুন। যাচাই করুন।<br /><em>তারপর কাজ করুন।</em></h2><p>সমস্যা শনাক্ত হওয়ার পর থেকে কাজ শেষ হওয়া পর্যন্ত কর্মকর্তারাই প্রতিটি সিদ্ধান্ত নেবেন।</p><a href="#pilot" className="button button-light">পাইলটের পরিধি দেখুন <Icon name="arrow" size={18} /></a></div><div className="workflow-steps"><div><span>০১</span><div><strong>সমস্যা চিহ্নিত করুন</strong><p>অনুমোদিত ছবিতে সমস্যা কোথায় আছে, তা মানচিত্রে দেখুন।</p></div></div><div><span>০২</span><div><strong>যাচাই ও পদক্ষেপ</strong><p>কর্মকর্তা তথ্য যাচাই করে প্রয়োজনীয় কাজের দায়িত্ব দেন।</p></div></div><div><span>০৩</span><div><strong>কাজের ফল মিলিয়ে দেখুন</strong><p>কাজের আগের ও পরের ছবি মিলিয়ে ফল যাচাই করুন।</p></div></div></div></div></section>
 
-      <section id="pilot" className="section pilot-section"><div className="container pilot-inner"><div className="pilot-heading"><span className="section-kicker">ছোট পরিসরে শুরু, দ্রুত শেখা</span><h2>বাংলাদেশের জন্য<br /><em>সুনির্দিষ্ট পাইলট।</em></h2><p>প্রস্তাবিত ৩০০–৫০০ মিটার এলাকা কাজের ধাপ পরীক্ষা, স্থানীয় তথ্য সংগ্রহ ও পদ্ধতি উন্নত করার সুযোগ দেবে।</p><div className="pilot-note"><Icon name="pin" size={18} /><span>একটি রাস্তা, বাজারসংলগ্ন এলাকা বা ক্যাম্পাসের সীমানা</span></div></div><div className="pilot-panel"><div className="pilot-panel-head"><span>প্রাথমিক পর্যবেক্ষণ</span><span>৬টি বিষয়</span></div><div className="pilot-list">{pilotCategories.map((category, index) => <div key={category}><span className="pilot-index">{['০১', '০২', '০৩', '০৪', '০৫', '০৬'][index]}</span><span>{category}</span><Icon name="arrowUp" size={16} /></div>)}</div><p>দৃশ্যমান সমস্যাগুলো পরিদর্শনের সম্ভাব্য স্থান নির্দেশ করে। প্রতিটি সিদ্ধান্তে মানুষের যাচাই প্রয়োজন।</p></div></div></section>
-      <section id="signin" className="signin-section"><div className="container signin-inner"><div><span className="section-kicker light">অফিসিয়াল ডেমো</span><h2>একটি ধারণা, সম্পূর্ণ <em>কাজের পথ।</em></h2><p>দৃশ্য বিশ্লেষণ থেকে মানব যাচাই, দায়িত্ব বণ্টন, মাঠকাজ এবং ফল পর্যালোচনা—সবই অনুমোদিত ডেমো কর্মকর্তাদের জন্য। এখানে দেখানো তথ্য ও AI ফল ধারণামূলক।</p><div className="signin-rule"><Icon name="shield" size={18}/><span>জনসাধারণ শুধু এই পরিচিতি পাতা দেখতে পারবেন।</span></div></div><form action={signIn} className="signin-card"><span className="signin-card-kicker">সুরক্ষিত প্রবেশ</span><h3>কর্মকর্তা সাইন ইন</h3><p>প্রশাসকের দেওয়া ডেমো অ্যাকাউন্ট ব্যবহার করুন। এখানে নতুন অ্যাকাউন্ট খোলা যায় না।</p>{authError && <div className="signin-error" role="alert">{authError === 'unavailable' ? 'ডেমো সার্ভার এখনও কনফিগার করা হয়নি।' : authError === 'denied' ? 'এই অ্যাকাউন্টের অফিসিয়াল অনুমতি নেই।' : authError === 'required' ? 'ভেতরের পাতা দেখতে আগে সাইন ইন করুন।' : 'ইমেইল বা পাসওয়ার্ড যাচাই করুন।'}</div>}<label>অফিসিয়াল ইমেইল<input type="email" name="email" autoComplete="username" placeholder="name@example.gov.bd" required/></label><label>পাসওয়ার্ড<input type="password" name="password" autoComplete="current-password" placeholder="আপনার পাসওয়ার্ড" required/></label><button type="submit" className="button button-primary">কর্মক্ষেত্রে প্রবেশ <Icon name="arrow" size={18}/></button><small>শুধু অনুমোদিত ডেমো অ্যাকাউন্ট</small></form></div></section>
+      <section id="pilot" className="section pilot-section"><div className="container pilot-inner"><div className="pilot-heading"><span className="section-kicker">বাংলাদেশে পরীক্ষামূলক উদ্যোগ</span><h2>শুরু হোক একটি<br /><em>ছোট এলাকা থেকে।</em></h2><p>প্রস্তাবিত ৩০০–৫০০ মিটার এলাকায় এই কাজের ধাপগুলো পরীক্ষা করে দেখা যাবে। সেখানকার অভিজ্ঞতা থেকে পদ্ধতিটি উন্নত করা যাবে।</p><div className="pilot-note"><Icon name="pin" size={18} /><span>একটি রাস্তা, বাজারের পাশের এলাকা বা ক্যাম্পাসের ভেতর</span></div></div><div className="pilot-panel"><div className="pilot-panel-head"><span>প্রাথমিক পর্যবেক্ষণ</span><span>৬টি বিষয়</span></div><div className="pilot-list">{pilotCategories.map((category, index) => <div key={category}><span className="pilot-index">{['০১', '০২', '০৩', '০৪', '০৫', '০৬'][index]}</span><span>{category}</span><Icon name="arrowUp" size={16} /></div>)}</div><p>ছবিতে সমস্যা দেখা গেলে জায়গাটি পরিদর্শন করতে হবে। কোনো সিদ্ধান্ত শুধু ছবির ওপর ভিত্তি করে নেওয়া যাবে না।</p></div></div></section>
+      <section id="signin" className="signin-section"><div className="container signin-inner"><div><span className="section-kicker light">কর্মকর্তাদের ডেমো</span><h2>সমস্যা দেখা থেকে <em>কাজ শেষ করা পর্যন্ত।</em></h2><p>নমুনা ছবি দেখা, সমস্যা যাচাই, দায়িত্ব দেওয়া এবং কাজের ফল পর্যালোচনা—পুরো প্রক্রিয়াটি কর্মকর্তারা ডেমোতে দেখতে পারবেন। এখানে দেখানো তথ্য ও ফল বাস্তব নয়।</p><div className="signin-rule"><Icon name="shield" size={18}/><span>সাধারণ দর্শকরা শুধু এই পরিচিতি পাতাটি দেখতে পারবেন।</span></div></div><form action={signIn} className="signin-card"><span className="signin-card-kicker">শুধু কর্মকর্তাদের জন্য</span><h3>কর্মকর্তার সাইন ইন</h3><p>প্রশাসকের দেওয়া ডেমো অ্যাকাউন্ট দিয়ে সাইন ইন করুন। এখানে নতুন অ্যাকাউন্ট খোলার সুযোগ নেই।</p>{authError && <div className="signin-error" role="alert">{authError === 'unavailable' ? 'সার্ভারের সঙ্গে সংযোগ করা যাচ্ছে না।' : authError === 'denied' ? 'এই অ্যাকাউন্টে কর্মকর্তা হিসেবে প্রবেশের অনুমতি নেই।' : authError === 'required' ? 'এই পাতা দেখতে আগে সাইন ইন করুন।' : 'ইমেইল বা পাসওয়ার্ড সঠিক নয়।'}</div>}<label>ইমেইল<input type="email" name="email" autoComplete="username" placeholder="name@example.gov.bd" required/></label><label>পাসওয়ার্ড<input type="password" name="password" autoComplete="current-password" placeholder="আপনার পাসওয়ার্ড" required/></label><button type="submit" className="button button-primary">সাইন ইন করুন <Icon name="arrow" size={18}/></button><small>শুধু অনুমোদিত ডেমো অ্যাকাউন্ট</small></form></div></section>
     </main>
 
-    <footer className="site-footer"><div className="container footer-inner"><div><Logo light /><p>রাস্তার তথ্য থেকে কার্যকর পদক্ষেপের পথে।</p></div><div className="footer-right"><a href="#top">ওপরে ফিরুন ↑</a><span>© {new Date().getFullYear().toLocaleString('bn-BD', { useGrouping: false })} Nagar Shield 360</span></div></div></footer>
+    <footer className="site-footer"><div className="container footer-inner"><div><Logo light /><p>সমস্যা দেখা থেকে কাজের ফল যাচাই—সব এক জায়গায়.</p></div><div className="footer-right"><a href="#top">ওপরে ফিরুন ↑</a><span>© {new Date().getFullYear().toLocaleString('bn-BD', { useGrouping: false })} Nagar Shield 360</span></div></div></footer>
   </div>
 }
 

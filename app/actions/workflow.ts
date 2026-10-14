@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { requireOfficial } from '@/src/lib/supabase/server'
 
-const allowedReturns = ['/dashboard', '/map', '/incidents', '/analysis', '/tasks', '/reports', '/governance']
+const allowedReturns = ['/dashboard', '/map', '/incidents', '/analysis', '/tasks', '/reports', '/governance', '/surveys']
 function safeReturn(value: FormDataEntryValue | null) {
   const path = String(value || '/dashboard')
   return allowedReturns.some(base => path === base || path.startsWith(`${base}/`)) && !path.includes('//') ? path : '/dashboard'
@@ -23,7 +23,29 @@ export async function performWorkflowAction(formData: FormData) {
     scenario_id: String(formData.get('scenario_id') || ''),
   }
   const back = safeReturn(formData.get('return_to'))
-  const { error } = await supabase.rpc('perform_demo_action', { p_action: action, p_target: target || null, p_payload: payload })
+  const workflowAction = action === 'verify_intake' ? 'verify_observation'
+    : action === 'dismiss_intake' ? 'dismiss_observation' : action
+  let error
+  if (['verify_observation', 'dismiss_observation'].includes(workflowAction) && target) {
+    const observation = await supabase.from('observations').select('source').eq('id', target).maybeSingle()
+    if (observation.error || !observation.data) {
+      redirect(`${back}?notice=${encodeURIComponent('পর্যবেক্ষণটি পাওয়া যায়নি বা দেখার অনুমতি নেই।')}`)
+    }
+    if (observation.data.source !== 'scenario') {
+      const result = await supabase.rpc('review_intake_observation', {
+        p_id: target,
+        p_approve: workflowAction === 'verify_observation',
+        p_note: payload.note,
+      })
+      error = result.error
+    }
+  }
+  if (error === undefined) {
+    const result = await supabase.rpc('perform_demo_action', {
+      p_action: workflowAction, p_target: target || null, p_payload: payload,
+    })
+    error = result.error
+  }
   if (error) redirect(`${back}?notice=${encodeURIComponent(error.message.slice(0, 120))}`)
   revalidatePath('/', 'layout')
   redirect(`${back}?notice=done`)

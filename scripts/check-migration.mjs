@@ -11,9 +11,13 @@ create function auth.role() returns text language sql stable as $$ select nullif
 create schema storage;
 create table storage.buckets(id text primary key,name text,public boolean,file_size_limit bigint,allowed_mime_types text[]);
 create table storage.objects(id uuid primary key default gen_random_uuid(),bucket_id text,name text);
+create function storage.foldername(p_name text) returns text[] language sql immutable as $$
+  select (string_to_array(p_name,'/'))[1:array_length(string_to_array(p_name,'/'),1)-1] $$;
+create function storage.extension(p_name text) returns text language sql immutable as $$
+  select split_part(p_name,'.',array_length(string_to_array(p_name,'.'),1)) $$;
 alter table storage.objects enable row level security;
 grant usage on schema public,auth,storage to anon,authenticated,service_role;
-grant select on storage.objects to authenticated;
+grant select,insert on storage.objects to authenticated;
 `)
 const migration = await readFile(new URL('../supabase/migrations/202610130001_prototype.sql', import.meta.url), 'utf8')
 // PGlite has built-in gen_random_uuid() but does not package Supabase's pgcrypto extension.
@@ -24,8 +28,20 @@ const resetHotfix = await readFile(new URL('../supabase/migrations/202610130002_
 assert.match(resetHotfix, /truncate table public\.notifications/)
 assert.doesNotMatch(resetHotfix, /delete\s+from\s+public\./i)
 await db.exec(resetHotfix)
+const mobileExtension = await readFile(new URL('../../NagarShield App/supabase/mobile_extension.sql', import.meta.url), 'utf8')
+const mobileRetry = await readFile(new URL('../../NagarShield App/supabase/mobile_extension_2.sql', import.meta.url), 'utf8')
+await db.exec(mobileExtension)
+await db.exec(mobileRetry)
+const surveyMigration = await readFile(new URL('../supabase/migrations/202610140001_survey_demo.sql', import.meta.url), 'utf8')
+await db.exec(surveyMigration)
+const copyMigration = await readFile(new URL('../supabase/migrations/202610140002_bangla_copy.sql', import.meta.url), 'utf8')
+await db.exec(copyMigration)
+const demoCopy = await db.query("select summary_bn from public.scenarios where id='drain'")
+assert.equal(demoCopy.rows[0].summary_bn, 'বাজার সড়কের ড্রেনের মুখে বর্জ্য জমে আছে।')
 const count = await db.query('select count(*)::int as count from public.incidents')
 assert.equal(count.rows[0].count, 18)
+const initialSurveys = await db.query('select count(*)::int as count from public.survey_missions')
+assert.equal(initialSurveys.rows[0].count, 2)
 const scores = await db.query(`select id,score,round(least(100,
   (factors->>'drain')::numeric*.30+(factors->>'vector')::numeric*.25+
   (factors->>'waste')::numeric*.15+(factors->>'access')::numeric*.15+
@@ -39,6 +55,7 @@ const users = [
   ['00000000-0000-4000-8000-000000001003','তত্ত্বাবধায়ক','supervisor','drainage','drainage-a'],
   ['00000000-0000-4000-8000-000000001004','ড্রেনেজ কর্মী','field_employee','drainage','drainage-a'],
   ['00000000-0000-4000-8000-000000001005','বর্জ্য কর্মী','field_employee','waste','waste-a'],
+  ['00000000-0000-4000-8000-000000001007','জরিপ অপারেটর','survey_operator','drainage',null],
 ]
 for (const [id,name,role,department,team] of users) {
   await db.query('insert into auth.users(id) values($1)',[id])
@@ -59,6 +76,21 @@ await asUser(executiveId, async () => {
   assert.equal(visible.rows[0].count,18)
   const score=await db.query("select score from public.scenarios where id='mixed'")
   assert.equal(score.rows[0].score,90)
+  const queue = await db.query("select count(*)::int as count from public.observations where status='needs_review'")
+  assert.equal(queue.rows[0].count,2)
+})
+await asUser(users[5][0], async () => {
+  const missions=await db.query('select count(*)::int as count from public.survey_missions')
+  assert.equal(missions.rows[0].count,1)
+  const observations=await db.query('select count(*)::int as count from public.observations')
+  assert.equal(observations.rows[0].count,1)
+  await assert.rejects(db.query("select public.perform_demo_action('verify_observation','00000000-0000-4000-a000-000000000001','{}')"))
+})
+await asUser(users[1][0], async () => {
+  await assert.rejects(db.query("select public.perform_demo_action('verify_observation','00000000-0000-4000-a000-000000000002','{}')"))
+  const reviewed=await db.query("select public.perform_demo_action('verify_observation','00000000-0000-4000-a000-000000000001','{}') as id")
+  const linked=await db.query('select observation_id from public.incidents where id=$1',[reviewed.rows[0].id])
+  assert.equal(linked.rows[0].observation_id,'00000000-0000-4000-a000-000000000001')
 })
 await asUser(drainageId, async () => {
   const visible=await db.query('select count(*)::int as count from public.incidents')
@@ -102,6 +134,14 @@ await asUser(executiveId, async () => {
   await db.query("select public.perform_demo_action('assign_task',$1,$2)",[newIncident,JSON.stringify({department_id:'drainage',assignee_id:drainageId,team_id:'drainage-a'})])
   await db.query("select public.perform_demo_action('assign_task',$1,$2)",[newIncident,JSON.stringify({department_id:'waste',assignee_id:wasteId,team_id:'waste-a'})])
 })
+const multiTasks=await db.query('select id,department_id from public.tasks where incident_id=$1',[newIncident])
+const drainageTask=multiTasks.rows.find(row=>row.department_id==='drainage').id
+await asUser(drainageId, async () => {
+  await db.query("select public.perform_demo_action('acknowledge_task',$1,'{}')",[drainageTask])
+  await db.query("select public.perform_demo_action('start_task',$1,'{}')",[drainageTask])
+})
+const multiStatus=await db.query('select status from public.incidents where id=$1',[newIncident])
+assert.equal(multiStatus.rows[0].status,'in_progress')
 await asUser(supervisorId, async () => {
   const visible=await db.query('select count(*)::int as count from public.incidents where id=$1',[newIncident])
   assert.equal(visible.rows[0].count,1)
@@ -124,8 +164,51 @@ await asUser(executiveId, async () => {
 })
 const restored=await db.query('select count(*)::int as count from public.incidents')
 assert.equal(restored.rows[0].count,18)
+const restoredSurveys=await db.query('select count(*)::int as count from public.survey_missions')
+assert.equal(restoredSurveys.rows[0].count,2)
+const restoredTaskCopy=await db.query('select distinct note from public.tasks')
+assert.deepEqual(restoredTaskCopy.rows.map(row=>row.note),['জায়গাটি দেখে প্রয়োজনীয় কাজ করুন।'])
+const citizenId='00000000-0000-4000-8000-000000001008'
+const otherCitizenId='00000000-0000-4000-8000-000000001009'
+await db.query('insert into auth.users(id) values($1),($2)',[citizenId,otherCitizenId])
+let citizenObservation
+let citizenTask
+await asUser(citizenId, async () => {
+  const created=await db.query('select public.submit_public_report($1,$2,$3,$4,$5,$6,$7,$8) as id',[
+    '10000000-0000-4000-8000-000000000043','Blocked drain','Water has remained for three days',
+    ['DRAIN_OBSTRUCTION'],'Market Road',23.8073,90.3683,'approximate',
+  ])
+  citizenObservation=created.rows[0].id
+  assert.equal((await db.query('select * from public.public_report_status()')).rows[0].status,'needs_review')
+})
+await asUser(otherCitizenId, async () => {
+  assert.equal((await db.query('select * from public.public_report_status()')).rows.length,0)
+  assert.equal((await db.query('select count(*)::int as count from public.observations')).rows[0].count,0)
+})
+await asUser(executiveId, async () => {
+  const reviewed=await db.query('select public.review_intake_observation($1,true,$2) as id',[citizenObservation,'Verified on web'])
+  const assigned=await db.query("select public.perform_demo_action('assign_task',$1,$2) as id",[
+    reviewed.rows[0].id,JSON.stringify({department_id:'drainage',assignee_id:drainageId,team_id:'drainage-a',note:'Clear the drain'}),
+  ])
+  citizenTask=assigned.rows[0].id
+})
+await asUser(drainageId, async () => {
+  await db.query("select public.perform_demo_action('acknowledge_task',$1,'{}')",[citizenTask])
+  await db.query("select public.perform_demo_action('start_task',$1,'{}')",[citizenTask])
+  await assert.rejects(db.query("select public.perform_demo_action('submit_task',$1,$2)",[
+    citizenTask,JSON.stringify({media_key:'scenarios/clean.svg',note:'Pretend work is complete'}),
+  ]))
+})
+await asUser(executiveId, async () => {
+  await db.query('select public.reset_demo()')
+})
+assert.equal((await db.query('select count(*)::int as count from public.incidents where observation_id=$1',[citizenObservation])).rows[0].count,1)
+await asUser(citizenId, async () => {
+  assert.equal((await db.query('select * from public.public_report_status()')).rows[0].status,'in_progress')
+})
 await db.exec('set role anon')
 await assert.rejects(db.query('select * from public.incidents'))
+await assert.rejects(db.query('select * from public.survey_missions'))
 await db.exec('reset role')
-process.stdout.write('Migration, seed, role visibility and task state transitions passed.\n')
+process.stdout.write('Shared migrations, citizen ownership, reset preservation, role visibility and task transitions passed.\n')
 await db.close()

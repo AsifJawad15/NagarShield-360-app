@@ -6,7 +6,7 @@ const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 if (!url || !serviceKey) throw new Error('Set Supabase URL and service role key in .env.local')
 const accounts = JSON.parse(await readFile(process.env.DEMO_ACCOUNTS_FILE || 'demo-accounts.local.json', 'utf8'))
 if (!Array.isArray(accounts) || !accounts.length) throw new Error('Account file must contain a nonempty JSON array')
-const roles = new Set(['executive','department_head','supervisor','field_employee'])
+const roles = new Set(['executive','department_head','supervisor','field_employee','survey_operator'])
 const departments = new Set(['drainage','waste','health','footpath','inspection'])
 for (const account of accounts) {
   if (!account.email || !account.password || account.password.length < 5 || account.password.includes('REPLACE_') || !account.display_name || !roles.has(account.role) || (account.role !== 'executive' && !departments.has(account.department_id))) throw new Error('Invalid demo account definition or placeholder password')
