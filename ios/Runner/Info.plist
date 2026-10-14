@@ -2,6 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Use your location to place a civic report or survey observation.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Select a photo as evidence for a civic report or field task.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Capture a photo as evidence for a civic report or field task.</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
