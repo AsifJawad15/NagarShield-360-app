@@ -1,0 +1,17 @@
+'use client'
+
+import dynamic from 'next/dynamic'
+import Link from 'next/link'
+import { useState } from 'react'
+import { hazards, priorities } from '@/src/lib/demo'
+import type { Incident } from '@/src/lib/types'
+
+const LeafletMap = dynamic(() => import('./LeafletMap'), { ssr: false, loading: () => <div className="map-loading">মানচিত্র প্রস্তুত হচ্ছে…</div> })
+
+export function MapPanel({ incidents, infrastructure }: { incidents: Incident[]; infrastructure: {id:string;type:string;label_bn:string;geometry:unknown}[] }) {
+  const [view, setView] = useState<'schematic'|'tiles'>('schematic')
+  const [hazard, setHazard] = useState('all')
+  const visible = incidents.filter(i => hazard === 'all' || i.hazard === hazard)
+  return <div className="map-layout"><div className="panel map-panel"><div className="map-toolbar"><div><strong>পাইলট এলাকার নমুনা মানচিত্র</strong><span>মিরপুরের নমুনা অবস্থান · বাস্তব স্থান যাচাই করা হয়নি</span></div><div className="segmented"><button type="button" className={view === 'schematic' ? 'active' : ''} onClick={() => setView('schematic')}>সহজ মানচিত্র</button><button type="button" className={view === 'tiles' ? 'active' : ''} onClick={() => setView('tiles')}>রাস্তার মানচিত্র</button></div></div><div className="map-stage">{view === 'tiles' ? <LeafletMap incidents={visible} infrastructure={infrastructure} onTileError={() => setView('schematic')}/> : <div className="schematic-map" role="img" aria-label="পাইলট এলাকার নমুনা সড়ক ও ঘটনাগুলোর অবস্থান"><svg viewBox="0 0 800 540" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="800" height="540" fill="#eaf1e9"/><path d="M0 160h800M0 370h800M160 0v540M420 0v540M690 0v540" stroke="#d7e5da" strokeWidth="4"/><path d="M-30 435 830 120M310-20 510 570" stroke="#fff" strokeWidth="74"/><path d="M-30 435 830 120M310-20 510 570" stroke="#dce5d9" strokeWidth="2" strokeDasharray="12 13"/><path d="M80 455 730 205" stroke="#67a98b" strokeWidth="6" strokeDasharray="9 12" fill="none"/><g fill="#d1e2d1"><rect x="30" y="30" width="200" height="100" rx="12"/><rect x="490" y="25" width="245" height="95" rx="12"/><rect x="45" y="220" width="180" height="90" rx="12"/><rect x="570" y="385" width="190" height="95" rx="12"/></g></svg><span className="schematic-label">নমুনা পাইলট এলাকা</span>{visible.map((item,index) => <Link title={`${item.code} · ${item.title_bn}`} className={`schematic-marker priority-${item.priority}`} href={`/incidents/${item.id}`} key={item.id} style={{left:`${18 + ((index*29)%67)}%`,top:`${24 + ((index*17)%55)}%`}}><span>{index+1}</span></Link>)}</div>}</div><div className="map-legend"><span><i className="legend-critical"/> অতি জরুরি</span><span><i className="legend-high"/> উচ্চ</span><span><i className="legend-moderate"/> মাঝারি</span><span><i className="legend-low"/> কম</span><span>ড্রেন ও ফুটপাতের রেখা: নমুনা</span></div></div><aside className="panel map-side"><div className="panel-head"><div><span className="mini-kicker">মানচিত্রে দেখা ঘটনা</span><h2>{visible.length}টি ঘটনা</h2></div></div><label>সমস্যার ধরন<select value={hazard} onChange={e => setHazard(e.target.value)}><option value="all">সব ধরন</option>{Object.entries(hazards).map(([key,label]) => <option value={key} key={key}>{label}</option>)}</select></label><div className="map-incident-list">{visible.map(item => <Link href={`/incidents/${item.id}`} key={item.id}><strong>{item.code} · {item.title_bn}</strong><span>{item.area_bn} · {priorities[item.priority]}</span></Link>)}</div></aside></div>
+}
+

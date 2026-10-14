@@ -1,0 +1,11 @@
+[
+  { "email": "executive@example.test", "password": "REPLACE_WITH_PRIVATE_PASSWORD", "display_name": "নির্বাহী কর্মকর্তা", "role": "executive" },
+  { "email": "drainage.head@example.test", "password": "REPLACE_WITH_PRIVATE_PASSWORD", "display_name": "ড্রেনেজ প্রধান", "role": "department_head", "department_id": "drainage" },
+  { "email": "drainage.supervisor@example.test", "password": "REPLACE_WITH_PRIVATE_PASSWORD", "display_name": "ড্রেনেজ তত্ত্বাবধায়ক", "role": "supervisor", "department_id": "drainage", "team_id": "drainage-a" },
+  { "email": "drainage.field@example.test", "password": "REPLACE_WITH_PRIVATE_PASSWORD", "display_name": "ড্রেনেজ মাঠকর্মী", "role": "field_employee", "department_id": "drainage", "team_id": "drainage-a" },
+  { "email": "waste.field@example.test", "password": "REPLACE_WITH_PRIVATE_PASSWORD", "display_name": "বর্জ্য মাঠকর্মী", "role": "field_employee", "department_id": "waste", "team_id": "waste-a" },
+  { "email": "health.field@example.test", "password": "REPLACE_WITH_PRIVATE_PASSWORD", "display_name": "স্বাস্থ্য মাঠকর্মী", "role": "field_employee", "department_id": "health", "team_id": "health-a" },
+  { "email": "footpath.field@example.test", "password": "REPLACE_WITH_PRIVATE_PASSWORD", "display_name": "ফুটপাত মাঠকর্মী", "role": "field_employee", "department_id": "footpath", "team_id": "footpath-a" },
+  { "email": "inspection.field@example.test", "password": "REPLACE_WITH_PRIVATE_PASSWORD", "display_name": "পরিদর্শন মাঠকর্মী", "role": "field_employee", "department_id": "inspection", "team_id": "inspection-a" },
+  { "email": "drainage.survey@example.test", "password": "REPLACE_WITH_PRIVATE_PASSWORD", "display_name": "ডেমো জরিপ অপারেটর", "role": "survey_operator", "department_id": "drainage" }
+]
