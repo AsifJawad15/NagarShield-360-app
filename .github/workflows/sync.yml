@@ -1,0 +1,38 @@
+﻿name: Auto Sync Subtrees
+
+on:
+  schedule:
+    - cron: '0 */6 * * *' # প্রতি ৬ ঘণ্টা পরপর অটোমেটিক চেক করবে
+  workflow_dispatch:      # গিটহাব থেকে যেকোনো সময় ১ ক্লিকে আপডেট করার বাটন
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Combined Repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Pull Updates from NagarShield-360 (Web)
+        run: |
+          git remote add web_repo https://github.com/abdullahshahporan/NagarShield-360.git || true
+          git fetch web_repo master
+          git subtree pull --prefix=NagarShield-360 web_repo master -m "Auto-sync NagarShield-360"
+
+      - name: Pull Updates from Nagar-Shield-360-App
+        run: |
+          git remote add app_repo https://github.com/abdullahshahporan/Nagar-Shield-360-App.git || true
+          git fetch app_repo master
+          git subtree pull --prefix=Nagar-Shield-360-App app_repo master -m "Auto-sync Nagar-Shield-360-App"
+
+      - name: Push Updates to Combined Repo
+        run: git push origin main
